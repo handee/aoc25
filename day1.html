@@ -5,6 +5,7 @@
 </html>
 <body>
 <input type="file" name="inputfile" id="inputfile">
+<input type="text" name="startval" id="startval" value="50">
 <br>
 
 <pre id="output"></pre>
@@ -12,12 +13,13 @@
 <script type="text/javascript">
 	document.getElementById('inputfile')
 		.addEventListener('change', function () {
+			s=document.getElementById('startval').textcontent
 
 			let fr = new FileReader();
 			fr.onload = function () {
 				const lines = fr.result.split('\n');
 				document.getElementById('output')
-					.textContent = lines;
+					.textContent = ostring;
 			}
 
 			fr.readAsText(this.files[0]);
