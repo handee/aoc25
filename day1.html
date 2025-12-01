@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title>handee's aoc25</title>
+	</head>
+</html>
+<body>
+<input type="file" name="inputfile" id="inputfile">
+<br>
+
+<pre id="output"></pre>
+
+<script type="text/javascript">
+	document.getElementById('inputfile')
+		.addEventListener('change', function () {
+
+			let fr = new FileReader();
+			fr.onload = function () {
+				const lines = fr.result.split('\n');
+				document.getElementById('output')
+					.textContent = lines;
+			}
+
+			fr.readAsText(this.files[0]);
+		})
+</script>
+
+</body>
+</html>
