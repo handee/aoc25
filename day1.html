@@ -1,60 +1,81 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>handee's aoc25</title>
-	</head>
+  <head>
+    <title>handee's aoc25</title>
+  </head>
 </html>
 <body>
-<input type="file" name="inputfile" id="inputfile">
-<input type="text" name="startval" id="startval" value="50">
-<br>
+  <input type="file" name="inputfile" id="inputfile">
+  <input type="text" name="startval" id="startval" value="50">
+  <br>
 
-<h1>The dial stops on zero this many times:</h1>
-<pre id="output"></pre>
-<h1>The dial passes zero this many times:</h1>
-<pre id="output2"></pre>
+  <h1>The dial stops on zero this many times:</h1>
+  <pre id="output"></pre>
+  <h1>The dial passes zero this many times:</h1>
+  <pre id="output2"></pre>
 
-<script type="text/javascript">
-	document.getElementById('inputfile')
-		.addEventListener('change', function () {
-			s=document.getElementById('startval').value
-			let zeroes=0;
-			let p2zeroes=0;
-                        current=Number(s);
-			let fr = new FileReader();
-			fr.onload = function () {
-				const lines = fr.result.split('\n');
-				for (let i=0;i<lines.length;i++) {
-					shift_distance=Number(lines[i].slice(1));
-					if (lines[i].charAt(0)=='R') {
-						new_val=current+shift_distance;
-						zc=Math.floor(new_val/100);
-						new_mod=new_val%100;
-					} else {
-						new_val=current-shift_distance;
-						zc=Math.abs(Math.floor(new_val/100));
-						new_mod=new_val%100;
-						if (new_val<0) {
-							new_mod +=100;
-						}
-					}
-					console.log(zc,lines[i],current,new_mod,new_val);
-                                        current=new_mod;
-					if (current==0) {
-						zeroes++;
-					}
-					p2zeroes+=zc
+  <h1>The total zeroes is:</h1>
+  <pre id="output3"></pre>
+  <script type="text/javascript">
+    document.getElementById('inputfile')
+      .addEventListener('change', function () {
+            s=document.getElementById('startval').value
+            let zeroes=0;
+            let p2zeroes=0;
+            prev=Number(s);
+            let fr = new FileReader();
+            fr.onload = function () {
+                  const lines = fr.result.split('\n');
+                  for (let i=0;i<lines.length;i++) {
+                        shift_distance=Number(lines[i].slice(1));
+                        if (lines[i].charAt(0)=='R') {
+                              // we are rotating right. add it up then work out how many times it's
+                              // spun past zero
+                           total_clicks=prev+shift_distance;
+                           current=total_clicks%100;
+                           zc=Math.floor(total_clicks/100);
+                           if (current==0) {
+                                 if (zc>0) {
+                                       // we landed on zero so we'll count it as a zero not a zero crossing
+                                       zc-=1;
+                                   }
+                             }
+                        } else {
+                              // we are rotating left. take it away then work out how many times it's
+                              // spun past zero
+                           total_clicks=prev-shift_distance;
+                           current=total_clicks%100;
+                           zc=Math.abs(Math.floor(total_clicks/100));
+                           if (current<0) {
+                                 current+=100;
+                           }
+                           if (prev==0) {
+                               // we started on zero then went left
+                              // we are in a sense going from +ve to -ve or vice versa;
+                              // however we have counted the zero crossing
+                              // as an actual zero already so we won't count it here 
+                              // because I couldn't get my head around the double counting
+                              zc-=1;
+                           }
+                        }
+                        console.log(zc,lines[i],prev,current,total_clicks);
+                        if (current==0) {
+                              zeroes++;
+                        }
+                        prev=current;
+                        p2zeroes+=zc
 
-				}
+                      }
 
 
-				document.getElementById('output').textContent = zeroes;
-				document.getElementById('output2').textContent = p2zeroes;
-			}
+                  document.getElementById('output').textContent = zeroes;
+                  document.getElementById('output2').textContent = p2zeroes;
+                  document.getElementById('output3').textContent = p2zeroes+zeroes;
+                }
 
-			fr.readAsText(this.files[0]);
-		})
-</script>
+          fr.readAsText(this.files[0]);
+          })
+  </script>
 
 </body>
-</html>
+                  </html>
