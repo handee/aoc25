@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>handee's aoc25</title>
@@ -8,18 +9,47 @@
 <input type="text" name="startval" id="startval" value="50">
 <br>
 
+<h1>The dial stops on zero this many times:</h1>
 <pre id="output"></pre>
+<h1>The dial passes zero this many times:</h1>
+<pre id="output2"></pre>
 
 <script type="text/javascript">
 	document.getElementById('inputfile')
 		.addEventListener('change', function () {
-			s=document.getElementById('startval').textcontent
-
+			s=document.getElementById('startval').value
+			let zeroes=0;
+			let p2zeroes=0;
+                        current=Number(s);
 			let fr = new FileReader();
 			fr.onload = function () {
 				const lines = fr.result.split('\n');
-				document.getElementById('output')
-					.textContent = ostring;
+				for (let i=0;i<lines.length;i++) {
+					shift_distance=Number(lines[i].slice(1));
+					if (lines[i].charAt(0)=='R') {
+						new_val=current+shift_distance;
+						zc=Math.floor(new_val/100);
+						new_mod=new_val%100;
+					} else {
+						new_val=current-shift_distance;
+						zc=Math.abs(Math.floor(new_val/100));
+						new_mod=new_val%100;
+						if (new_val<0) {
+							new_mod +=100;
+						}
+					}
+					console.log(zc,lines[i],current,new_mod,new_val);
+                                        current=new_mod;
+					if (current==0) {
+						zeroes++;
+					}
+					p2zeroes+=zc
+
+				}
+
+
+				document.getElementById('output').textContent = zeroes;
+				document.getElementById('output2').textContent = p2zeroes;
 			}
 
 			fr.readAsText(this.files[0]);
