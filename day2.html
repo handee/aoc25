@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>handee's aoc25: day 2</title>
+    <link rel="stylesheet" href = "aoc25.css" media="screen">
+  </head>
+</html>
+<body>
+  <input type="file" name="inputfile" id="inputfile">
+  <br>
+
+  <h1>There are this many invalid IDs:</h1>
+  <pre id="output"></pre>
+  <h1>The invalid IDs add up to:</h1>
+  <pre id="output2"></pre>
+
+  <script type="text/javascript">
+    function isEven(n) {
+    return (n % 2 == 0);
+}
+    document.getElementById('inputfile')
+      .addEventListener('change', function () {
+            let invalid_count=0;
+            let total=0;
+            let fr = new FileReader();
+            fr.onload = function () {
+                  const lines = fr.result.split(',');
+                  for (let i=0;i<lines.length;i++) {
+                        console.log(lines[i]);
+                        [start,end]=lines[i].split('-');
+                        for (j=start;j<=end;j++) {
+                              value=String(j);
+                              if (isEven(value.length)) {  // no point testing them if l is odd 
+                                l=value.length /2;
+                                back_part=value.slice(0,l);
+                                front_part=value.slice(l);
+                                if (back_part == front_part){ 
+                                      console.log("invalid",j)
+                                      invalid_count++;
+                                      total+=Number(j);
+                                }
+                              }
+
+                            }
+
+                      }
+                  document.getElementById('output').textContent = invalid_count;
+                  document.getElementById('output2').textContent = total;
+                }
+
+            fr.readAsText(this.files[0]);
+          })
+  </script>
+
+  <!-- 14747034620 is too low -->
+</body>
+</html>
