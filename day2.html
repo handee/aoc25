@@ -26,10 +26,12 @@
             fr.onload = function () {
                   const lines = fr.result.split(',');
                   for (let i=0;i<lines.length;i++) {
-                        console.log(lines[i]);
+                        //console.log(lines[i]);
                         [start,end]=lines[i].split('-');
-                        for (j=start;j<=end;j++) {
+                        //console.log(start,end)
+                        for (j=Number(start);j<=Number(end);j++) {
                               value=String(j);
+                              //console.log(value.length, "is the length of ",j, String(j))
                               if (isEven(value.length)) {  // no point testing them if l is odd 
                                 l=value.length /2;
                                 back_part=value.slice(0,l);
@@ -53,5 +55,6 @@
   </script>
 
   <!-- 14747034620 is too low -->
+  <!-- 24747430309 is another guess -->
 </body>
 </html>
