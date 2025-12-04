@@ -91,11 +91,12 @@
 				// part two
                               console.log(value,value.length,factor_array[value.length])
 			      for (let findex=0;findex<factor_array[value.length].length;findex++) {
-					console.log(value.length,findex)
-					console.log(factor_array[value.length][findex])
+					console.log(value,value.length,findex)
+				        let current_factor=Number(factor_array[value.length][findex]);
+					console.log(current_factor,typeof(current_factor))
 					//split value string into candidates
-				        if (factor_array[value.length][findex]>1) {
-						candidates=value.match(/.{1,factor_array[value.length][findex]}/g);
+				        if (current_factor>1) {
+						candidates=value.match(/.{current_factor}/g);
 					} else {
 						candidates=value.split('');
 					}
