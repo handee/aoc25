@@ -8,53 +8,116 @@
 <body>
   <input type="file" name="inputfile" id="inputfile">
   <br>
-
-  <h1>There are this many invalid IDs:</h1>
+  <h1>Part One</h1>
+  <h2>There are this many invalid IDs:</h2>
   <pre id="output"></pre>
-  <h1>The invalid IDs add up to:</h1>
+  <h2>The invalid IDs add up to:</h2>
   <pre id="output2"></pre>
+  <h1>Part Two</h1>
+  <h2>There are this many invalid IDs:</h2>
+  <pre id="outputp2"></pre>
+  <h2>The invalid IDs add up to:</h2>
+  <pre id="outputp22"></pre>
 
   <script type="text/javascript">
-    function isEven(n) {
-    return (n % 2 == 0);
-}
+    function is_even(n) {
+	    return (n % 2 == 0);
+    }
+
+    function get_factors(n) {
+	    let factors=[1]; // one is always a factor
+	    // so is n but we don't need that so we'll leave it out
+	    for (i=2;i<=Math.floor(Math.sqrt(n)); i++) {
+		    // square root trick - factors come in pairs
+	            if (n % i === 0) {
+			    factors.push(i);
+			    if ((i*i) !== n) { // if n is not i squared
+				    factors.push(n/i);
+			    }
+		    }
+	    }
+	    return(factors);
+
+    }
+
+    function are_the_same(a) {
+	    // takes an array a and returns true if all the elements are 
+	    // idential otherwise false.
+	    let i=0
+	    rv=true
+	    while (i<a.length-1) {
+		    if (a[i]!==a[i+1]) {
+			    rv=false;
+			    break
+		    } else {
+			    i+=1
+		    }
+	    }
+
+            return(rv)
+
+    }
     document.getElementById('inputfile')
       .addEventListener('change', function () {
             let invalid_count=0;
+            let invalid_count2=0;
             let total=0;
+            let total2=0;
             let fr = new FileReader();
+	      let factor_array= [];
+	      //let us just cache the factors for numbers up to 10
+	      //don't think there are any ids longer than 10 digits
+	      for (let i=0;i<=10;i++) {
+                  factor_array[i]=get_factors(i);
+	      }
+	      console.log(factor_array);
             fr.onload = function () {
                   const lines = fr.result.split(',');
                   for (let i=0;i<lines.length;i++) {
-                        //console.log(lines[i]);
                         [start,end]=lines[i].split('-');
-                        //console.log(start,end)
-                        for (j=Number(start);j<=Number(end);j++) {
+                        for (let j=Number(start);j<=Number(end);j++) {
                               value=String(j);
-                              //console.log(value.length, "is the length of ",j, String(j))
-                              if (isEven(value.length)) {  // no point testing them if l is odd 
+			//part one
+                              if (is_even(value.length)) {  
+				      // no point testing them if l is odd 
                                 l=value.length /2;
                                 back_part=value.slice(0,l);
                                 front_part=value.slice(l);
                                 if (back_part == front_part){ 
-                                      console.log("invalid",j)
                                       invalid_count++;
                                       total+=Number(j);
                                 }
                               }
+				// part two
+                              console.log(value,value.length,factor_array[value.length])
+			      for (let findex=0;findex<factor_array[value.length].length;findex++) {
+					console.log(value.length,findex)
+					console.log(factor_array[value.length][findex])
+					//split value string into candidates
+				        if (factor_array[value.length][findex]>1) {
+						candidates=value.match(/.{1,factor_array[value.length][findex]}/g);
+					} else {
+						candidates=value.split('');
+					}
+					console.log(candidates)
+					if (are_the_same(candidates)){
+						console.log("INVALID")
+					}
+				}
+                              
 
                             }
 
                       }
                   document.getElementById('output').textContent = invalid_count;
                   document.getElementById('output2').textContent = total;
+                  document.getElementById('outputp2').textContent = invalid_count2;
+                  document.getElementById('outputp22').textContent = total2;
                 }
 
             fr.readAsText(this.files[0]);
           })
   </script>
 
-  <!-- 14747034620 is too low -->
-  <!-- 24747430309 is another guess -->
 </body>
 </html>
