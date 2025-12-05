@@ -71,6 +71,13 @@
                   factor_array[i]=get_factors(i);
 	      }
 	      console.log(factor_array);
+
+	    for (let i=0;i<10;i++) {
+		    matchregex=new RegExp(i);
+		    console.log(matchregex,i)
+		    x='1111111111'.match(/.matchregex/,g);
+		    console.log(x)
+	    }
             fr.onload = function () {
                   const lines = fr.result.split(',');
                   for (let i=0;i<lines.length;i++) {
@@ -103,6 +110,8 @@
 					console.log(candidates)
 					if (are_the_same(candidates)){
 						console.log("INVALID")
+						invalid_count2+=1
+						total2+=Number(j)
 					}
 				}
                               
