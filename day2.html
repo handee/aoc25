@@ -21,42 +21,43 @@
 
   <script type="text/javascript">
     function is_even(n) {
-	    return (n % 2 == 0);
-    }
+          return (n % 2 == 0);
+        }
 
     function get_factors(n) {
-	    let factors=[1]; // one is always a factor
-	    // so is n but we don't need that so we'll leave it out
-	    for (i=2;i<=Math.floor(Math.sqrt(n)); i++) {
-		    // square root trick - factors come in pairs
-	            if (n % i === 0) {
-			    factors.push(i);
-			    if ((i*i) !== n) { // if n is not i squared
-				    factors.push(n/i);
-			    }
-		    }
-	    }
-	    return(factors);
+          let factors=[1]; // one is always a factor
+          // so is n but we don't need that so we'll leave it out
+          for (i=2;i<=Math.floor(Math.sqrt(n)); i++) {
+                // square root trick - factors come in pairs
+                if (n % i === 0) {
+                      factors.push(i);
+                      if ((i*i) !== n) { // if n is not i squared
+                            factors.push(n/i);
+                          }
+                    }
+              }
+          return(factors);
 
-    }
+        }
 
     function are_the_same(a) {
-	    // takes an array a and returns true if all the elements are 
-	    // idential otherwise false.
-	    let i=0
-	    rv=true
-	    while (i<a.length-1) {
-		    if (a[i]!==a[i+1]) {
-			    rv=false;
-			    break
-		    } else {
-			    i+=1
-		    }
-	    }
+          // takes an array a and returns true if all the elements are 
+          // idential otherwise false.
+          let i=0
+          rv=true
+          while (i<a.length-1) {
+                if (a[i]!==a[i+1]) {
+                  rv=false;
+                  break
+               } else {
+                  i+=1
+               }
+         }
+         return(rv)
 
-            return(rv)
+    }  
 
-    }
+
     document.getElementById('inputfile')
       .addEventListener('change', function () {
             let invalid_count=0;
@@ -64,70 +65,59 @@
             let total=0;
             let total2=0;
             let fr = new FileReader();
-	      let factor_array= [];
-	      //let us just cache the factors for numbers up to 10
-	      //don't think there are any ids longer than 10 digits
-	      for (let i=0;i<=10;i++) {
-                  factor_array[i]=get_factors(i);
-	      }
-	      console.log(factor_array);
+            let factor_array= [];
+            //let us just cache the factors for numbers up to 12
+            //don't think there are any ids longer than 12 digits
+            for (let i=0;i<=12;i++) {
+               factor_array[i]=get_factors(i);
+            }
 
-	    for (let i=0;i<10;i++) {
-		    matchregex=new RegExp(i);
-		    console.log(matchregex,i)
-		    x='1111111111'.match(/.matchregex/,g);
-		    console.log(x)
-	    }
             fr.onload = function () {
-                  const lines = fr.result.split(',');
-                  for (let i=0;i<lines.length;i++) {
-                        [start,end]=lines[i].split('-');
-                        for (let j=Number(start);j<=Number(end);j++) {
-                              value=String(j);
-			//part one
-                              if (is_even(value.length)) {  
-				      // no point testing them if l is odd 
-                                l=value.length /2;
-                                back_part=value.slice(0,l);
-                                front_part=value.slice(l);
-                                if (back_part == front_part){ 
-                                      invalid_count++;
-                                      total+=Number(j);
-                                }
-                              }
-				// part two
-                              console.log(value,value.length,factor_array[value.length])
-			      for (let findex=0;findex<factor_array[value.length].length;findex++) {
-					console.log(value,value.length,findex)
-				        let current_factor=Number(factor_array[value.length][findex]);
-					console.log(current_factor,typeof(current_factor))
-					//split value string into candidates
-				        if (current_factor>1) {
-						candidates=value.match(/.{current_factor}/g);
-					} else {
-						candidates=value.split('');
-					}
-					console.log(candidates)
-					if (are_the_same(candidates)){
-						console.log("INVALID")
-						invalid_count2+=1
-						total2+=Number(j)
-					}
-				}
-                              
-
-                            }
-
+              const lines = fr.result.split(',');
+              for (let i=0;i<lines.length;i++) {
+                [start,end]=lines[i].split('-');
+                for (let j=Number(start);j<=Number(end);j++) {
+                  let valid=1;
+                  value=String(j);
+                  //part one
+                  if (is_even(value.length)) {  
+                  // no point testing them if l is odd 
+                    l=value.length /2;
+                    back_part=value.slice(0,l);
+                    front_part=value.slice(l);
+                    if (back_part == front_part){ 
+                      invalid_count++;
+                      total+=Number(j);
+                    }
+                  } //end part one
+                  // part two
+                  for (let findex=0;findex<factor_array[value.length].length;findex++) {
+                    if (valid===1) {
+                      let current_factor=Number(factor_array[value.length][findex]);
+                      //split value string into candidates
+                      matchregex=new RegExp('.{'+current_factor+'}', 'g');
+                      candidates=value.match(matchregex);
+                      if (are_the_same(candidates)){
+                        console.log(candidates)
+                        console.log("INVALID:",value)
+                        valid=0;
+                        invalid_count2+=1
+                        total2+=Number(j)
                       }
-                  document.getElementById('output').textContent = invalid_count;
-                  document.getElementById('output2').textContent = total;
-                  document.getElementById('outputp2').textContent = invalid_count2;
-                  document.getElementById('outputp22').textContent = total2;
-                }
+                    } // end 'if valid'
+                  } // end part 2
 
+                } // end for each number in the range
+              } // end for each range
+
+              document.getElementById('output').textContent = invalid_count;
+              document.getElementById('output2').textContent = total;
+              document.getElementById('outputp2').textContent = invalid_count2;
+              document.getElementById('outputp22').textContent = total2;
+            };
             fr.readAsText(this.files[0]);
           })
   </script>
-
+              <!-- 30962646867 was too high -->
 </body>
-</html>
+            </html>
