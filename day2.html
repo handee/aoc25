@@ -48,10 +48,13 @@
           while (i<a.length-1) {
                 if (a[i]!==a[i+1]) {
                   rv=false;
-                  break
+                  break;
                } else {
-                  i+=1
+                  i+=1;
                }
+         }
+         if (a.length==1) {
+               rv=false;
          }
          return(rv)
 
@@ -75,8 +78,10 @@
             fr.onload = function () {
               const lines = fr.result.split(',');
               for (let i=0;i<lines.length;i++) {
+                    // for each group of input ids
                 [start,end]=lines[i].split('-');
                 for (let j=Number(start);j<=Number(end);j++) {
+                      // for each id in range
                   let valid=1;
                   value=String(j);
                   //part one
