@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>handee's aoc25</title>
+  </head>
+</html>
+<body>
+  <input type="file" name="inputfile" id="inputfile">
+  <br>
+
+  <h1>The joltage of the bank is:</h1>
+  <pre id="output"></pre>
+  <script type="text/javascript">
+	  function part1(batteries) {
+		  let total_joltage=0;
+		  for (let i=0;i<batteries.length-1;i++) {
+			console.log(batteries[i]);
+			let max_j=batteries[i].at(-2); //penultimate in array
+			let next_max_j=batteries[i].at(-1); //last
+			for (let j=batteries[i].length-3;j>=0;j--) {
+				if (batteries[i][j]>=max_j) {
+					if (max_j>=next_max_j) {
+						next_max_j=max_j;
+					}
+					max_j=batteries[i][j];
+				} 
+			}
+			battery_max=' '+max_j+next_max_j;
+			total_joltage+=Number(battery_max);
+	          }
+		  return total_joltage;
+	  }
+
+      function part2(batteries, bs) {
+	      //batteries and battery size- finally this will be 12
+	      //but let's make it easier during testing
+	  let total_joltage=0;
+	  for (let i=0;i<batteries.length-1;i++) {
+		console.log(batteries[i]);
+		buffer=batteries[i].slice(-bs);
+		console.log(buffer)
+	  	for (let j=batteries[i].length-bs;j>=0;j--) {
+		// stick some logic in heree	
+	        }
+		total_joltage+=Number(buffer);
+	  return total_joltage;
+	      
+
+      }
+    document.getElementById('inputfile')
+      .addEventListener('change', function () {
+            let fr = new FileReader();
+            fr.onload = function () {
+
+                  const b= fr.result.split('\n');
+		  ans1=part1(b);
+		  ans2=part2(b,2);
+                
+                  document.getElementById('output').textContent = ans1;
+                  document.getElementById('output').textContent = ans2;
+                }
+
+          fr.readAsText(this.files[0]);
+          })
+  </script>
+  <!--17026 is not right-->
+</body>
+                  </html>
