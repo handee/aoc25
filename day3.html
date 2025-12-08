@@ -39,10 +39,27 @@
 		console.log(batteries[i]);
 		buffer=batteries[i].slice(-bs);
 		console.log(buffer)
-	  	for (let j=batteries[i].length-bs;j>=0;j--) {
-		// stick some logic in heree	
+		previndex=0;
+	  	for (let b=0;b<=bs;b++) {
+		  // First one will be the biggest number in the first 
+		  // n cells where n=batteries.length - bs-1
+		  lsf=0; //largest so far
+	          curindex=0;
+		  for (let c=previndex;c<(batteries.length-(bs-b));c++) {
+		    if (batteries[i][c]>lsf) {
+		       lsf=batteries[i][c];
+		       curindex=c
+
+		    }
+	            console.log(b,c,lsf, batteries[i][c]);
+	          }
+		  buffer[b]=lsf;
+		  previndex=curindex;
+
 	        }
+		console.log(buffer);
 		total_joltage+=Number(buffer);
+	    }
 	  return total_joltage;
 	      
 
