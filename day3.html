@@ -37,23 +37,24 @@
 	  let total_joltage=0;
 	  for (let i=0;i<batteries.length-1;i++) {
 		console.log(batteries[i]);
-		buffer=batteries[i].slice(-bs);
+		buffer=[];
 		console.log(buffer)
-		previndex=0;
-	  	for (let b=0;b<=bs;b++) {
+		previndex=-1;
+	  	for (let b=0;b<bs;b++) {
 		  // First one will be the biggest number in the first 
-		  // n cells where n=batteries.length - bs-1
+		  // n cells where n=batteries[i].length - bs-1
 		  lsf=0; //largest so far
 	          curindex=0;
-		  for (let c=previndex;c<(batteries.length-(bs-b));c++) {
+		  for (let c=previndex+1;c<(batteries[i].length-(bs-b-1));c++) {
 		    if (batteries[i][c]>lsf) {
 		       lsf=batteries[i][c];
 		       curindex=c
 
 		    }
-	            console.log(b,c,lsf, batteries[i][c]);
+	            console.log(b,c,bs-b,lsf, batteries[i][c]);
 	          }
 		  buffer[b]=lsf;
+		  console.log(b, buffer);
 		  previndex=curindex;
 
 	        }
@@ -71,7 +72,7 @@
 
                   const b= fr.result.split('\n');
 		  ans1=part1(b);
-		  ans2=part2(b,2);
+		  ans2=part2(b,12);
                 
                   document.getElementById('output').textContent = ans1;
                   document.getElementById('output').textContent = ans2;
