@@ -38,7 +38,6 @@
 	  for (let i=0;i<batteries.length-1;i++) {
 		console.log(batteries[i]);
 		buffer=[];
-		console.log(buffer)
 		previndex=-1;
 	  	for (let b=0;b<bs;b++) {
 		  // First one will be the biggest number in the first 
@@ -51,15 +50,13 @@
 		       curindex=c
 
 		    }
-	            console.log(b,c,bs-b,lsf, batteries[i][c]);
 	          }
 		  buffer[b]=lsf;
-		  console.log(b, buffer);
 		  previndex=curindex;
 
 	        }
-		console.log(buffer);
-		total_joltage+=Number(buffer);
+		console.log(buffer.join(""));
+		total_joltage+=Number(buffer.join(""));
 	    }
 	  return total_joltage;
 	      
